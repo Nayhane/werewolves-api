@@ -1,7 +1,7 @@
 {
-  "name": "memory-game-api",
+  "name": "werewolves-game-api",
   "version": "1.0.0",
-  "description": "API for memory games",
+  "description": "API for werewolves game",
   "main": "index.js",
   "license": "MIT",
   "engines": {
