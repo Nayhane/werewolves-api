@@ -40,7 +40,7 @@ module.exports = io => {
 
     const newPlayer= {
       name: req.body.name,
-      picture:  req.body.picture,
+      photo:  req.body.photo,
       id:  req.village._id,
     }
 
