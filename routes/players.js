@@ -30,11 +30,12 @@ module.exports = io => {
     })
     .post('/players', authenticate, (req, res, next) => {
       const newPlayer = {
-        userId: req.account._id,
-        players: [{
-          userId: req.account._id
-        }]
-      }
+        village: req.village._id,
+        playerName: req.body.playerName,
+        mayor: req.body.mayor,
+        dead: req.body.dead,
+        photo: req.body.photo
+        }
 
       Player.create(newPlayer)
         .then((player) => {
@@ -68,22 +69,22 @@ module.exports = io => {
         })
         .catch((error) => next(error))
     })
-    .delete('/players/:id', authenticate, (req, res, next) => {
-      const id = req.params.id
-      Player.findByIdAndRemove(id)
-        .then(() => {
-          io.emit('action', {
-            type: 'PLAYER_REMOVED',
-            payload: id
-          })
-          res.status = 200
-          res.json({
-            message: 'Removed',
-            _id: id
-          })
-        })
-        .catch((error) => next(error))
-    })
+    // .delete('/players/:id', authenticate, (req, res, next) => {
+    //   const id = req.params.id
+    //   Player.findByIdAndRemove(id)
+    //     .then(() => {
+    //       io.emit('action', {
+    //         type: 'PLAYER_REMOVED',
+    //         payload: id
+    //       })
+    //       res.status = 200
+    //       res.json({
+    //         message: 'Removed',
+    //         _id: id
+    //       })
+    //     })
+    //     .catch((error) => next(error))
+    // })
 
   return router
 }
