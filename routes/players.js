@@ -29,13 +29,8 @@ module.exports = io => {
         .catch((error) => next(error))
     })
     .post('/players', authenticate, (req, res, next) => {
-      const newPlayer = {
-        village: req.village._id,
-        name: req.body.name,
-        mayor: req.body.mayor,
-        dead: req.body.dead,
-        photo: req.body.photo
-        }
+
+      const newPlayer = req.body
 
       Player.create(newPlayer)
         .then((player) => {
