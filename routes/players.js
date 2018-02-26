@@ -1,79 +1,79 @@
-// routes/games.js
+// routes/players.js
 const router = require('express').Router()
 const passport = require('../config/auth')
-const { Game } = require('../models')
+const { Player } = require('../models')
 const utils = require('../lib/utils')
-const processMove = require('../lib/processMove')
+
 
 const authenticate = passport.authorize('jwt', { session: false })
 
 module.exports = io => {
   router
-    .get('/games', (req, res, next) => {
-      Game.find()
-        // Newest games first
+    .get('/players', (req, res, next) => {
+      Player.find()
+        // Newest players first
         .sort({ createdAt: -1 })
         // Send the data in JSON format
-        .then((games) => res.json(games))
+        .then((players) => res.json(players))
         // Throw a 500 error if something goes wrong
         .catch((error) => next(error))
     })
-    .get('/games/:id', (req, res, next) => {
+    .get('/players/:id', (req, res, next) => {
       const id = req.params.id
 
-      Game.findById(id)
-        .then((game) => {
-          if (!game) { return next() }
-          res.json(game)
+      Player.findById(id)
+        .then((player) => {
+          if (!player) { return next() }
+          res.json(player)
         })
         .catch((error) => next(error))
     })
-    .post('/games', authenticate, (req, res, next) => {
-      const newGame = {
+    .post('/players', authenticate, (req, res, next) => {
+      const newPlayer = {
         userId: req.account._id,
         players: [{
           userId: req.account._id
         }]
       }
 
-      Game.create(newGame)
-        .then((game) => {
+      Player.create(newPlayer)
+        .then((player) => {
           io.emit('action', {
-            type: 'GAME_CREATED',
-            payload: game
+            type: 'PLAYER_CREATED',
+            payload: player
           })
-          res.json(game)
+          res.json(player)
         })
         .catch((error) => next(error))
     })
-    .patch('/games/:id', authenticate, (req, res, next) => {
+    .patch('/players/:id', authenticate, (req, res, next) => {
       const id = req.params.id
       const userId = req.account._id.toString()
 
-      Game.findById(id)
-        .then((game) => {
-          if (!game) { return next() }
+      Player.findById(id)
+        .then((player) => {
+          if (!player) { return next() }
 
-          const updatedGame = processMove(game, req.body, userId)
 
-          Game.findByIdAndUpdate(id, { $set: updatedGame }, { new: true })
-            .then((game) => {
+
+          Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
+            .then((player) => {
               io.emit('action', {
-                type: 'GAME_UPDATED',
-                payload: game
+                type: 'PLAYER_UPDATED',
+                payload: player
               })
-              res.json(game)
+              res.json(player)
             })
             .catch((error) => next(error))
         })
         .catch((error) => next(error))
     })
-    .delete('/games/:id', authenticate, (req, res, next) => {
+    .delete('/players/:id', authenticate, (req, res, next) => {
       const id = req.params.id
-      Game.findByIdAndRemove(id)
+      Player.findByIdAndRemove(id)
         .then(() => {
           io.emit('action', {
-            type: 'GAME_REMOVED',
+            type: 'PLAYER_REMOVED',
             payload: id
           })
           res.status = 200
