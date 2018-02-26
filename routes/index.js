@@ -6,5 +6,5 @@ const sessions = require('./sessions')
 module.exports = {
   players,
   users,
-  sessions,
+  sessions
 }

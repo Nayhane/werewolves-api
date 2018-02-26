@@ -29,6 +29,7 @@ module.exports = io => {
         .catch((error) => next(error))
     })
     .post('/players', authenticate, (req, res, next) => {
+
       const newPlayer = req.body
 
       Player.create(newPlayer)
