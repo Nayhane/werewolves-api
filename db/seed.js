@@ -7,17 +7,17 @@ const createUrl = (path) => {
 }
 
 const createPlayers = (token) => {
-  return players.map((players) => {
+  return players.map((player) => {
     return request
       .post(createUrl('/players'))
       .set('Authorization', `Bearer ${token}`)
-      .send(players)
+      .send(player)
       .then((res) => {
         console.log(res.body)
-        console.log('Players seeded...', res.body.name)
+        console.log('Player seeded...', res.body.name)
       })
       .catch((err) => {
-        console.error('Error seeding players!', err)
+        console.error('Error seeding player!', err)
       })
   })
 }
