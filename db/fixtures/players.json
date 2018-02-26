@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Pikachu",
+    "photo": "http://img1.ak.crunchyroll.com/i/spire4/9ad5cd9bad3916ff66101b5dca5f9b281468941727_large.jpg",
+    "mayor": true,
+    "dead": false,
+    "village": [
+      {
+        "name": "Ash"
+      }
+    ]
+  },
+  {
+    "name": "Mewtwo",
+    "photo": "https://pm1.narvii.com/6304/02d4bb71b0deb67fc2f3f3ab21fba0af6c063d89_hq.jpg",
+    "mayor": true,
+    "dead": false,
+    "village": [
+      {
+        "name": "Ash"
+      }
+    ]
+  },
+  {
+    "name": "Squirtle",
+    "photo": "https://3.bp.blogspot.com/-ciMTqrE6JtQ/WhBeWP2T90I/AAAAAAAAAdI/2WQDlA_ZH28IiKpBrRE94y76AJBevZjCACEwYBhgL/s200/Squirtle.png",
+    "mayor": false,
+    "dead": false,
+    "village": [
+      {
+        "name": "Ash"
+      }
+    ]
+  },
+  {
+    "name": "Ninetails",
+    "photo": "https://vignette.wikia.nocookie.net/pokemon/images/0/05/038Ninetales.png/revision/latest/scale-to-width-down/200?cb=20140816221359&path-prefix=nl",
+    "mayor": false,
+    "dead": false,
+    "village": [
+      {
+        "name": "Misty"
+      }
+    ]
+  },
+  {
+    "name": "Vulpix",
+    "photo": "https://4.bp.blogspot.com/-sR02U1P24MA/WQThLkq-NYI/AAAAAAAADxI/KsVwBI2HfRYPAYAnYbTNPPlBz69L0rnuACLcB/s200/900px-037Vulpix.png",
+    "mayor": false,
+    "dead": false,
+    "village": [
+      {
+        "name": "Misty"
+      }
+    ]
+  },
+  {
+    "name": "Jigglypuff",
+    "photo": "https://vignette.wikia.nocookie.net/pokemon/images/3/3e/039Jigglypuff.png/revision/latest/scale-to-width-down/200?cb=20140816221359&path-prefix=nl",
+    "mayor": false,
+    "dead": false,
+    "village": [
+      {
+        "name": "Misty"
+      }
+    ]
+  }
+]
