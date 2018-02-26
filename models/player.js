@@ -1,19 +1,17 @@
-// models/game.js
 const mongoose = require('../config/database')
 const { Schema } = mongoose
 
-
 const villageSchema = new Schema({
-  name: {type: String, required: false },
+  name: { type: String },
 });
 
 
 const playerSchema = new Schema({
   village: [villageSchema],
-  playerName: {type: String, required: false },
+  name: {type: String },
   mayor: { type: Boolean, default: false },
   dead: { type: Boolean, default: false },
-  photo: { type: String, required: true },
+  photo: { type: String },
 });
 
 module.exports = mongoose.model('players', playerSchema)
