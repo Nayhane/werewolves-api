@@ -31,7 +31,7 @@ module.exports = io => {
     .post('/players', authenticate, (req, res, next) => {
       const newPlayer = {
         village: req.village._id,
-        playerName: req.body.playerName,
+        name: req.body.name,
         mayor: req.body.mayor,
         dead: req.body.dead,
         photo: req.body.photo
