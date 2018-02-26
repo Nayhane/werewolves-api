@@ -27,7 +27,6 @@ app
   .use(bodyParser.json())
   .use(passport.initialize())
   .use(players(io))
-  .use(villagePlayers(io))
   .use(users)
   .use(sessions)
 
