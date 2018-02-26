@@ -13,7 +13,6 @@ const createPlayers = (token) => {
       .set('Authorization', `Bearer ${token}`)
       .send(player)
       .then((res) => {
-        console.log(res.body)
         console.log('Player seeded...', res.body.name)
       })
       .catch((err) => {

@@ -29,12 +29,7 @@ module.exports = io => {
         .catch((error) => next(error))
     })
     .post('/players', authenticate, (req, res, next) => {
-      const newPlayer = {
-        userId: req.account._id,
-        players: [{
-          userId: req.account._id
-        }]
-      }
+      const newPlayer = req.body
 
       Player.create(newPlayer)
         .then((player) => {
