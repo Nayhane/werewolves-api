@@ -10,11 +10,14 @@ const authenticate = passport.authorize('jwt', { session: false })
 module.exports = io => {
   router
     .get('/players', (req, res, next) => {
+      console.log("Player hsjfjhkshdkdsfkjshdkjhskjghdskjgh")
       Player.find()
-        // Newest players first
-        .sort({ createdAt: -1 })
+
         // Send the data in JSON format
-        .then((players) => res.json(players))
+        .then((players) =>
+        {console.log(players)
+          res.json(players)})
+
         // Throw a 500 error if something goes wrong
         .catch((error) => next(error))
     })
