@@ -10,12 +10,11 @@ const authenticate = passport.authorize('jwt', { session: false })
 module.exports = io => {
   router
     .get('/players', (req, res, next) => {
-      console.log("Player hsjfjhkshdkdsfkjshdkjhskjghdskjgh")
+
       Player.find()
 
         // Send the data in JSON format
-        .then((players) =>
-        {console.log(players)
+        .then((players) => {
           res.json(players)})
 
         // Throw a 500 error if something goes wrong
@@ -52,7 +51,20 @@ module.exports = io => {
         .then((player) => {
           if (!player) { return next() }
 
-          const updatedPlayer = {}
+          let updatedPlayer = {}
+
+          if (req.body.dead) {
+            updatedPlayer = {...player, dead: req.body.dead}
+          } else if (req.body.mayor) {
+            updatedPlayer = {...player, mayor: req.body.mayor}
+          } else if (req.body.message) {
+            updatedPlayer = {...player, message: req.body.message}
+          } else {
+            updatedPlayer = player
+          }
+
+          console.log('the player is: ')
+          console.log(updatedPlayer)
 
           Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
             .then((player) => {

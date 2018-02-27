@@ -11,6 +11,7 @@ const playerSchema = new Schema({
   name: {type: String },
   mayor: { type: Boolean, default: false },
   dead: { type: Boolean, default: false },
+  message: { type: Boolean, default: false },
   photo: { type: String },
 });
 
