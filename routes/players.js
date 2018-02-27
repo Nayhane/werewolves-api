@@ -32,7 +32,12 @@ module.exports = io => {
     })
     .post('/players', authenticate, (req, res, next) => {
 
-      const newPlayer = req.body
+      const newPlayer = {
+        name: req.body.name,
+        photo: req.body.photo,
+        village: [{name: 'Wakkerdam'}]
+      }
+
 
       Player.create(newPlayer)
         .then((player) => {
