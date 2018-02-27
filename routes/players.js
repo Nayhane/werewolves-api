@@ -10,13 +10,11 @@ const authenticate = passport.authorize('jwt', { session: false })
 module.exports = io => {
   router
     .get('/players', (req, res, next) => {
-      console.log("Player hsjfjhkshdkdsfkjshdkjhskjghdskjgh")
       Player.find()
 
         // Send the data in JSON format
         .then((players) =>
-        {console.log(players)
-          res.json(players)})
+        {res.json(players)})
 
         // Throw a 500 error if something goes wrong
         .catch((error) => next(error))
@@ -33,7 +31,12 @@ module.exports = io => {
     })
     .post('/players', authenticate, (req, res, next) => {
 
-      const newPlayer = req.body
+      const newPlayer = {
+        name: req.body.name,
+        photo: req.body.photo,
+        village: [{name: 'Wakkerdam'}]
+      }
+
 
       Player.create(newPlayer)
         .then((player) => {
