@@ -47,13 +47,12 @@ module.exports = io => {
     })
     .patch('/players/:id', authenticate, (req, res, next) => {
       const id = req.params.id
-      const userId = req.account._id.toString()
 
       Player.findById(id)
         .then((player) => {
           if (!player) { return next() }
 
-
+          const updatedPlayer = {}
 
           Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
             .then((player) => {
