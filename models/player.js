@@ -13,6 +13,7 @@ const playerSchema = new Schema({
   dead: { type: Boolean, default: false },
   message: { type: Boolean, default: false },
   photo: { type: String },
+  createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('players', playerSchema)
