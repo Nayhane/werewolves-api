@@ -134,6 +134,31 @@ module.exports = io => {
         })
         .catch((error) => next(error))
     })
+
+
+    .patch('/players/:id/moveplayers', authenticate, (req, res, next) => {
+      const id = req.params.id
+
+      Player.findById(id)
+        .then((player) => {
+          if (!player) { return next() }
+
+          let updatedVillage = {...player.village[0], name: req.body.name}
+          let updatedPlayer = {...player, village: [updatedVillage]}
+
+      Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
+            .then((player) => {
+              io.emit('action', {
+                type: 'PLAYERS_UPDATED',
+                payload: player
+              })
+              res.json(player)
+            })
+            .catch((error) => next(error))
+        })
+        .catch((error) => next(error))
+    })
+
     .delete('/players/:id', authenticate, (req, res, next) => {
       const id = req.params.id
       Player.findByIdAndRemove(id)
