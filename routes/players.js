@@ -56,7 +56,7 @@ module.exports = io => {
         .then((player) => {
           if (!player) { return next() }
 
-          let updatedPlayer = {...player, dead: req.body.dead }
+          let updatedPlayer = {...player, dead: req.body.dead, mayor: req.body.mayor }
 
           Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
             .then((player) => {
@@ -98,7 +98,7 @@ module.exports = io => {
         .then((player) => {
           if (!player) { return next() }
 
-          let updatedPlayer = {...player, message: req.body.message}
+          let updatedPlayer = {...player, messageSent: req.body.messageSent}
 
           Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
             .then((player) => {
