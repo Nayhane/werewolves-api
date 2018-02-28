@@ -18,6 +18,7 @@ const playerSchema = new Schema({
   dead: { type: Boolean, default: false },
   messageSent: { type: String },
   photo: { type: String },
+  createdAt: { type: Date, default: Date.now },
   receivedMessages: { type: Array, default: [] }
 });
 
