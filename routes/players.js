@@ -49,27 +49,78 @@ module.exports = io => {
         })
         .catch((error) => next(error))
     })
-    .patch('/players/:id', authenticate, (req, res, next) => {
+    .patch('/players/:id/dead', authenticate, (req, res, next) => {
       const id = req.params.id
 
       Player.findById(id)
         .then((player) => {
           if (!player) { return next() }
 
-          let updatedPlayer = {}
+          let updatedPlayer = {...player, dead: req.body.dead }
 
-          if (req.body.dead) {
-            updatedPlayer = {...player, dead: req.body.dead}
-          } else if (req.body.mayor) {
-            updatedPlayer = {...player, mayor: req.body.mayor}
-          } else if (req.body.message) {
-            updatedPlayer = {...player, message: req.body.message}
-          } else {
-            updatedPlayer = player
-          }
+          Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
+            .then((player) => {
+              io.emit('action', {
+                type: 'PLAYER_UPDATED',
+                payload: player
+              })
+              res.json(player)
+            })
+            .catch((error) => next(error))
+        })
+        .catch((error) => next(error))
+    })
+    .patch('/players/:id/mayor', authenticate, (req, res, next) => {
+      const id = req.params.id
 
-          console.log('the player is: ')
-          console.log(updatedPlayer)
+      Player.findById(id)
+        .then((player) => {
+          if (!player) { return next() }
+
+          let updatedPlayer = {...player, mayor: req.body.mayor}
+
+          Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
+            .then((player) => {
+              io.emit('action', {
+                type: 'PLAYER_UPDATED',
+                payload: player
+              })
+              res.json(player)
+            })
+            .catch((error) => next(error))
+        })
+        .catch((error) => next(error))
+    })
+    .patch('/players/:id/message', authenticate, (req, res, next) => {
+      const id = req.params.id
+
+      Player.findById(id)
+        .then((player) => {
+          if (!player) { return next() }
+
+          let updatedPlayer = {...player, message: req.body.message}
+
+          Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
+            .then((player) => {
+              io.emit('action', {
+                type: 'PLAYER_UPDATED',
+                payload: player
+              })
+              res.json(player)
+            })
+            .catch((error) => next(error))
+        })
+        .catch((error) => next(error))
+    })
+    .patch('/players/:id/village', authenticate, (req, res, next) => {
+      const id = req.params.id
+
+      Player.findById(id)
+        .then((player) => {
+          if (!player) { return next() }
+
+          let updatedVillage = {...player.village[0], name: req.body.name}
+          let updatedPlayer = {...player, village: [updatedVillage]}
 
           Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
             .then((player) => {
