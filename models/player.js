@@ -18,7 +18,7 @@ const playerSchema = new Schema({
   dead: { type: Boolean, default: false },
   messageSent: { type: String },
   photo: { type: String },
-  receivedMessages: { type: Array, default: [] }
+  receivedMessages: [messageSchema]
 });
 
 module.exports = mongoose.model('players', playerSchema)
