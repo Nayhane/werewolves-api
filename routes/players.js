@@ -29,11 +29,24 @@ module.exports = io => {
         .catch((error) => next(error))
     })
     .post('/players', authenticate, (req, res, next) => {
+      let wakkerdamArray= [Player.find({ village: [{ name: 'Wakkerdam'}] })]
+      let sluimervoortArray= [Player.find({ village: [{ name: 'Sluimervoort'}] })]
+
+      let currentVillage= "Sluimervoort"
+      if (wakkerdamArray.length > sluimervoortArray.length) {
+        currentVillage = "Sluimervoort"
+      } else if (sluimervoortArray.length > wakkerdamArray.length){
+        currentVillage = "Wakkerdam"
+      }
+
+      console.log(currentVillage)
+      console.log(wakkerdamArray.length)
+      console.log(sluimervoortArray.length)
 
       const newPlayer = {
         name: req.body.name,
         photo: req.body.photo,
-        village: [{name: 'Wakkerdam'}]
+        village: [{name: currentVillage}]
       }
 
       Player.create(newPlayer)
