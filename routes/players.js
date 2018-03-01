@@ -108,9 +108,11 @@ module.exports = io => {
     .patch('/players/:id/mayor', authenticate, (req, res, next) => {
       const id = req.params.id
 
+
       Player.findById(id)
         .then((player) => {
           if (!player) { return next() }
+          if (player.dead === true) {return null}
 
           let updatedPlayer = {...player, mayor: req.body.mayor}
 

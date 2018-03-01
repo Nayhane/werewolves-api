@@ -6,7 +6,6 @@ const villageSchema = new Schema({
 });
 
 const messageSchema = new Schema({
-  name: { type: String },
   message: { type: String },
   senderName: { type: String }
 });
