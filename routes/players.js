@@ -46,7 +46,8 @@ module.exports = io => {
       const newPlayer = {
         name: req.body.name,
         photo: req.body.photo,
-        village: [{name: currentVillage}]
+        village: [{name: currentVillage}],
+        receivedMessages: req.body.receivedMessages
       }
 
       Player.create(newPlayer)
