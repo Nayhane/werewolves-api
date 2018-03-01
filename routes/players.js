@@ -5,12 +5,21 @@ const { Player } = require('../models')
 
 const authenticate = passport.authorize('jwt', { session: false })
 
+const loadPlayers = (req, res, next) => {
+
+  Player.find()
+    .then((players) => {
+      req.players = players
+      next()
+    })
+    .catch((error) => next(error))
+}
+
 module.exports = io => {
   router
     .get('/players', (req, res, next) => {
 
       Player.find()
-
         // Send the data in JSON format
         .then((players) => {
           res.json(players)})
@@ -28,25 +37,25 @@ module.exports = io => {
         })
         .catch((error) => next(error))
     })
-    .post('/players', authenticate, (req, res, next) => {
-      let wakkerdamArray= [Player.find({ village: [{ name: 'Wakkerdam'}] })]
-      let sluimervoortArray= [Player.find({ village: [{ name: 'Sluimervoort'}] })]
+    .post('/players', authenticate, loadPlayers, (req, res, next) => {
 
-      let currentVillage= "Sluimervoort"
-      if (wakkerdamArray.length > sluimervoortArray.length) {
-        currentVillage = "Sluimervoort"
-      } else if (sluimervoortArray.length > wakkerdamArray.length){
-        currentVillage = "Wakkerdam"
+      let newVillage = ''
+
+      if (req.players.length === 0) {
+        newVillage = 'Wakkerdam'
+      } else if (req.players.length > 0) {
+        const lastVillage = req.players[req.players.length-1].village[0].name
+        if (lastVillage === 'Wakkerdam') {
+          newVillage = 'Sluimervoort'
+        } else {
+          newVillage = 'Wakkerdam'
+        }
       }
-
-      console.log(currentVillage)
-      console.log(wakkerdamArray.length)
-      console.log(sluimervoortArray.length)
 
       const newPlayer = {
         name: req.body.name,
         photo: req.body.photo,
-        village: [{name: currentVillage}]
+        village: [{name: newVillage}]
       }
 
       Player.create(newPlayer)
@@ -58,7 +67,7 @@ module.exports = io => {
           res.json(player)
         })
         .catch((error) => next(error))
-    })
+      })
     .post('/players/:id/receivemessage', authenticate, (req, res, next) => {
       const id = req.params.id
 
