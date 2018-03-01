@@ -55,7 +55,8 @@ module.exports = io => {
       const newPlayer = {
         name: req.body.name,
         photo: req.body.photo,
-        village: [{name: newVillage}]
+        village: [{name: newVillage}],
+        receivedMessages: []
       }
 
       Player.create(newPlayer)
@@ -117,9 +118,11 @@ module.exports = io => {
     .patch('/players/:id/mayor', authenticate, (req, res, next) => {
       const id = req.params.id
 
+
       Player.findById(id)
         .then((player) => {
           if (!player) { return next() }
+          if (player.dead === true) {return null}
 
           let updatedPlayer = {...player, mayor: req.body.mayor}
 
