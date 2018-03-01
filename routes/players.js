@@ -2,8 +2,6 @@
 const router = require('express').Router()
 const passport = require('../config/auth')
 const { Player } = require('../models')
-const utils = require('../lib/utils')
-
 
 const authenticate = passport.authorize('jwt', { session: false })
 
@@ -51,7 +49,6 @@ module.exports = io => {
         village: [{name: currentVillage}]
       }
 
-
       Player.create(newPlayer)
         .then((player) => {
           io.emit('action', {
@@ -61,6 +58,31 @@ module.exports = io => {
           res.json(player)
         })
         .catch((error) => next(error))
+    })
+    .post('/players/:id/receivemessage', authenticate, (req, res, next) => {
+      const id = req.params.id
+
+      Player.findById(id)
+        .then((player) => {
+          if (!player) { return next() }
+
+          newMessage = req.body
+
+          player.receivedMessages = [...player.receivedMessages, newMessage]
+
+          player.save()
+            .then((player) => {
+
+              io.emit('action', {
+                type: 'PLAYER_MESSAGES_UPDATED',
+                payload: {
+                  player: player,
+                }
+              })
+              res.json(player)
+          })
+          .catch((error) => next(error))
+        })
     })
     .patch('/players/:id/dead', authenticate, (req, res, next) => {
       const id = req.params.id
@@ -104,7 +126,7 @@ module.exports = io => {
         })
         .catch((error) => next(error))
     })
-    .patch('/players/:id/message', authenticate, (req, res, next) => {
+    .patch('/players/:id/sendmessage', authenticate, (req, res, next) => {
       const id = req.params.id
 
       Player.findById(id)
