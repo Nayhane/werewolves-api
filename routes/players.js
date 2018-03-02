@@ -190,7 +190,7 @@ module.exports = io => {
       Player.findById(id)
         .then((player) => {
           if (!player) { return next() }
-
+          if (player.dead ) { return next()}
           let updatedVillage = {...player.village[0], name: req.body.name}
           let updatedPlayer = {...player, village: [updatedVillage]}
 
