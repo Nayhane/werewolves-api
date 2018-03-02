@@ -8,7 +8,8 @@ const villageSchema = new Schema({
 const messageSchema = new Schema({
   message: { type: String },
   senderName: { type: String },
-  createdAt: { type: Date }
+  createdAt: { type: Date },
+  messageRead: { type: Boolean }
 });
 
 const playerSchema = new Schema({

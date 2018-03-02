@@ -76,7 +76,7 @@ module.exports = io => {
         .then((player) => {
           if (!player) { return next() }
 
-          newMessage = {...req.body, createdAt: Date.now()}
+          newMessage = {...req.body, createdAt: Date.now(), messageRead: false}
 
           player.receivedMessages = [...player.receivedMessages, newMessage]
 
@@ -197,8 +197,33 @@ module.exports = io => {
         })
         .catch((error) => next(error))
     })
+    .patch('/players/:id/messageread', authenticate, (req, res, next) => {
+      const id = req.params.id
 
+      Player.findById(id)
+        .then((player) => {
+          if (!player) { return next() }
 
+          let updatedPlayer = player.receivedMessages.map((m) => {
+            if (m._id.toString() === req.body.toString()) {
+              return {...m, messageRead: true}
+            }
+
+            return m
+          })
+
+          Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
+            .then((player) => {
+              io.emit('action', {
+                type: 'PLAYER_UPDATED',
+                payload: player
+              })
+              res.json(player)
+            })
+            .catch((error) => next(error))
+        })
+        .catch((error) => next(error))
+    })
     .patch('/players/:id/moveplayers', authenticate, (req, res, next) => {
       const id = req.params.id
 
