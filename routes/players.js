@@ -204,18 +204,39 @@ module.exports = io => {
         .then((player) => {
           if (!player) { return next() }
 
-          let updatedPlayer = player.receivedMessages.map((m) => {
-            if (m._id.toString() === req.body.toString()) {
-              return {...m, messageRead: true}
-            }
+          // const updatedMessage = player.receivedMessages.filter((m) => {
+          //   if (m._id.toString() === req.body[0].toString()) {
+          //     return {...m, messageRead: req.body[1].messageRead}
+          //   }
+          //   return m
+          // })
 
+
+          const updatedMessages = player.receivedMessages.map((m) => {
+            if (m._id.toString() === req.body[0].toString()) {
+              console.log('this message is: ' + m)
+              return {
+                ...m,
+                message: m.message,
+                createdAt: m.createdAt,
+                senderName: m.senderName,
+                messageRead: req.body[1].messageRead
+              }
+            }
             return m
           })
 
+          console.log(updatedMessages)
+
+          const updatedPlayer = {...player, receivedMessages: updatedMessages}
+
+          //console.log(updatedPlayer)
+
           Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
             .then((player) => {
+              //console.log(player)
               io.emit('action', {
-                type: 'PLAYER_UPDATED',
+                type: 'PLAYER_MESSAGE_UPDATED',
                 payload: player
               })
               res.json(player)
