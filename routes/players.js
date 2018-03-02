@@ -56,7 +56,7 @@ module.exports = io => {
         name: req.body.name,
         photo: req.body.photo,
         village: [{name: newVillage}],
-        receivedMessages: []
+        receivedMessages: req.body.receivedMessages
       }
 
       Player.create(newPlayer)
@@ -144,6 +144,7 @@ module.exports = io => {
       Player.findById(id)
         .then((player) => {
           if (!player) { return next() }
+          if (player.dead === true) {return null}
 
           let updatedPlayer = {...player, messageSent: req.body.messageSent}
 
