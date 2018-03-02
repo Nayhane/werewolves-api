@@ -39,17 +39,34 @@ module.exports = io => {
     })
     .post('/players', authenticate, loadPlayers, (req, res, next) => {
 
+      const W = 'Wakkerdam'
+      const S = 'Sluimervoort'
+
       let newVillage = ''
 
       if (req.players.length === 0) {
-        newVillage = 'Wakkerdam'
+        newVillage = W
       } else if (req.players.length > 0) {
         const lastVillage = req.players[req.players.length-1].village[0].name
-        if (lastVillage === 'Wakkerdam') {
-          newVillage = 'Sluimervoort'
+        if (lastVillage === W) {
+          newVillage = S
         } else {
-          newVillage = 'Wakkerdam'
+          newVillage = W
         }
+      }
+
+      const maxWakkerdam = req.players.filter(e => e.village[0].name === W )
+      const maxSluimervoort = req.players.filter(e => e.village[0].name === S)
+
+      if (maxWakkerdam.length > 14 && newVillage === W) {
+        let err = new Error('The Village of WakkerDam is Full')
+          err.status = 422
+          throw err
+      }
+      if (maxSluimervoort.length > 14 && newVillage === S) {
+        let err = new Error('The Village of Sluimervoort is Full')
+          err.status = 422
+          throw err
       }
 
       const newPlayer = {
