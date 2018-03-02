@@ -76,7 +76,7 @@ module.exports = io => {
         .then((player) => {
           if (!player) { return next() }
 
-          newMessage = req.body
+          newMessage = {...req.body, createdAt: Date.now()}
 
           player.receivedMessages = [...player.receivedMessages, newMessage]
 
