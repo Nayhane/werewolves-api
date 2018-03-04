@@ -224,6 +224,7 @@ module.exports = io => {
 
     .delete('/players/:id', authenticate, (req, res, next) => {
       const id = req.params.id
+
       Player.findByIdAndRemove(id)
         .then(() => {
           io.emit('action', {
