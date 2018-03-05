@@ -102,9 +102,7 @@ module.exports = io => {
 
               io.emit('action', {
                 type: 'PLAYER_MESSAGES_UPDATED',
-                payload: {
-                  player: player,
-                }
+                payload: player
               })
               res.json(player)
           })
@@ -274,6 +272,7 @@ module.exports = io => {
 
     .delete('/players/:id', authenticate, (req, res, next) => {
       const id = req.params.id
+
       Player.findByIdAndRemove(id)
         .then(() => {
           io.emit('action', {
