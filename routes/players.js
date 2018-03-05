@@ -102,9 +102,7 @@ module.exports = io => {
 
               io.emit('action', {
                 type: 'PLAYER_MESSAGES_UPDATED',
-                payload: {
-                  player: player,
-                }
+                payload: player
               })
               res.json(player)
           })
