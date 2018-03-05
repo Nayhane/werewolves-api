@@ -8,12 +8,6 @@
       {
         "name": "Wakkerdam"
       }
-    ],
-    "receivedMessages": [
-      {
-      "message": "Hello test test",
-      "senderName": "Mewtwo"
-      }
     ]
   },
   {
@@ -24,12 +18,6 @@
     "village": [
       {
         "name": "Wakkerdam"
-      }
-    ],
-    "receivedMessages": [
-      {
-      "message": "Hello world",
-      "senderName": "Pikachu"
       }
     ]
   },
