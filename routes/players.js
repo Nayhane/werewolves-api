@@ -73,8 +73,11 @@ module.exports = io => {
         name: req.body.name,
         photo: req.body.photo,
         village: [{name: newVillage}],
-        receivedMessages: req.body.receivedMessages
+        //receivedMessages: req.body.receivedMessages
+        receivedMessages: []
       }
+
+      console.log(req.body.receivedMessages)
 
       Player.create(newPlayer)
         .then((player) => {
@@ -269,7 +272,28 @@ module.exports = io => {
         })
         .catch((error) => next(error))
     })
+    .patch('/players/:id/resetplayers', authenticate, loadPlayers, (req, res, next) => {
+      const id = req.params.id
 
+      Player.findById(id)
+        .then((player) => {
+          if (!player) { return next() }
+
+          let updatedVillage = {...player.village[0], name: req.body.name}
+          let updatedPlayer = {...player, dead: false, mayor: false, messageSent: false, receivedMessages: [], village: [updatedVillage]}
+
+          Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
+            .then((player) => {
+              io.emit('action', {
+                type: 'PLAYERS_UPDATED',
+                payload: player
+              })
+              res.json(player)
+            })
+            .catch((error) => next(error))
+        })
+        .catch((error) => next(error))
+    })
     .delete('/players/:id', authenticate, (req, res, next) => {
       const id = req.params.id
 
