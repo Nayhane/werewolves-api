@@ -221,14 +221,6 @@ module.exports = io => {
         .then((player) => {
           if (!player) { return next() }
 
-          // const updatedMessage = player.receivedMessages.filter((m) => {
-          //   if (m._id.toString() === req.body[0].toString()) {
-          //     return {...m, messageRead: req.body[1].messageRead}
-          //   }
-          //   return m
-          // })
-
-
           const updatedMessages = player.receivedMessages.map((m) => {
             if (m._id.toString() === req.body[0].toString()) {
               console.log('this message is: ' + m)
@@ -243,15 +235,10 @@ module.exports = io => {
             return m
           })
 
-          console.log(updatedMessages)
-
           const updatedPlayer = {...player, receivedMessages: updatedMessages}
-
-          //console.log(updatedPlayer)
 
           Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
             .then((player) => {
-              //console.log(player)
               io.emit('action', {
                 type: 'PLAYER_MESSAGE_UPDATED',
                 payload: player
