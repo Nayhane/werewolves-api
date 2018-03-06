@@ -299,14 +299,14 @@ module.exports = io => {
         })
         .catch((error) => next(error))
     })
-    .delete('/players/:id', authenticate, (req, res, next) => {
+    .delete('/players/:id', authenticate, loadPlayers, (req, res, next) => {
       const id = req.params.id
 
       Player.findByIdAndRemove(id)
-        .then(() => {
+        .then((player) => {
           io.emit('action', {
             type: 'PLAYER_REMOVED',
-            payload: id
+            payload: player
           })
           res.status = 200
           res.json({
