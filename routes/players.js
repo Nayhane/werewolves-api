@@ -77,8 +77,6 @@ module.exports = io => {
         receivedMessages: []
       }
 
-      console.log(req.body.receivedMessages)
-
       Player.create(newPlayer)
         .then((player) => {
           io.emit('action', {
