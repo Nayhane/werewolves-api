@@ -136,10 +136,15 @@ module.exports = io => {
 
     .patch('/players/:id/mayor', authenticate, loadPlayers, (req, res, next) => {
       const id = req.params.id
-      const wakkerdamArray =  req.players.filter((player) => {
-         return player.village[0].name === "Wakkerdam"
-       })
-       const sluimervoortArray =  req.players.filter((player) => {
+
+      Player.findById(id)
+      .then((player) => {
+          if (!player) { return next() }
+
+        const wakkerdamArray =  req.players.filter((player) => {
+          return player.village[0].name === "Wakkerdam"
+        })
+        const sluimervoortArray =  req.players.filter((player) => {
           return player.village[0].name === "Sluimervoort"
         })
 
@@ -150,27 +155,27 @@ module.exports = io => {
         const sMayorArray = sluimervoortArray.filter((player) => {
           return player.mayor === true
         })
-        if (sMayorArray.length > 0 && wMayorArray.length > 0 ){ return next() }
 
-      Player.findById(id)
+        if (wMayorArray.length > 0 && player.village[0].name === "Wakkerdam"){ return null}
+        if (sMayorArray.length > 0 && player.village[0].name === "Sluimervoort"){ return null}
+        if (sMayorArray.length > 0 && wMayorArray.length > 0 ){ return null }
+        if (player.dead === true) {return null}
+
+        let updatedPlayer = {...player, mayor: req.body.mayor}
+
+        Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
         .then((player) => {
-          if (!player) { return next() }
-          if (player.dead === true) {return null}
-
-          let updatedPlayer = {...player, mayor: req.body.mayor}
-
-          Player.findByIdAndUpdate(id, { $set: updatedPlayer }, { new: true })
-            .then((player) => {
-              io.emit('action', {
-                type: 'PLAYER_UPDATED',
-                payload: player
-              })
-              res.json(player)
-            })
-            .catch((error) => next(error))
+          io.emit('action', {
+            type: 'PLAYER_UPDATED',
+            payload: player
+          })
+          res.json(player)
         })
         .catch((error) => next(error))
+      })
+      .catch((error) => next(error))
     })
+
     .patch('/players/:id/sendmessage', authenticate, (req, res, next) => {
       const id = req.params.id
 
