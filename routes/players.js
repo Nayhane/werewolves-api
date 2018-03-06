@@ -139,24 +139,24 @@ module.exports = io => {
       .then((player) => {
           if (!player) { return next() }
 
-        const wakkerdamArray =  req.players.filter((player) => {
-          return player.village[0].name === "Wakkerdam"
-        })
-        const sluimervoortArray =  req.players.filter((player) => {
-          return player.village[0].name === "Sluimervoort"
-        })
-
-        const wMayorArray = wakkerdamArray.filter((player) => {
-          return player.mayor === true
-        })
-
-        const sMayorArray = sluimervoortArray.filter((player) => {
-          return player.mayor === true
-        })
-
-        if (wMayorArray.length > 0 && player.village[0].name === "Wakkerdam"){ return null}
-        if (sMayorArray.length > 0 && player.village[0].name === "Sluimervoort"){ return null}
-        if (sMayorArray.length > 0 && wMayorArray.length > 0 ){ return null }
+        // const wakkerdamArray =  req.players.filter((player) => {
+        //   return player.village[0].name === "Wakkerdam"
+        // })
+        // const sluimervoortArray =  req.players.filter((player) => {
+        //   return player.village[0].name === "Sluimervoort"
+        // })
+        //
+        // const wMayorArray = wakkerdamArray.filter((player) => {
+        //   return player.mayor === true
+        // })
+        //
+        // const sMayorArray = sluimervoortArray.filter((player) => {
+        //   return player.mayor === true
+        // })
+        //
+        // if (wMayorArray.length > 0 && player.village[0].name === "Wakkerdam"){ return null}
+        // if (sMayorArray.length > 0 && player.village[0].name === "Sluimervoort"){ return null}
+        // if (sMayorArray.length > 0 && wMayorArray.length > 0 ){ return null }
         if (player.dead === true) {return null}
 
         let updatedPlayer = {...player, mayor: req.body.mayor}
